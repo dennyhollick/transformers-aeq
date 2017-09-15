@@ -66,24 +66,25 @@ function calculateOverallRating(bots) {
   return botsWithRatings;
 }
 
-// function sortTeam(bots, team) {
-//   const currentTeam = [];
-//   bots.forEach((bot) => {
-//     if (bot.team === team) {
-//       currentTeam.push(bot);
-//     }
-//   });
-//   sortTeamByOverallRating(currentTeam);
-// }
+function sortTeam(bots, team) {
+  const currentTeam = [];
+  bots.forEach((bot) => {
+    if (bot.team === team) {
+      currentTeam.push(bot);
+    }
+  });
+  return currentTeam;
+}
 
 function battle(bots) {
   // Need to check if there are both teams present
   const botsWithRatings = calculateOverallRating(bots);
-  // const autobots = sortTeam(bots, 'Autobot');
+  const autobots = sortTeam(bots, 'Autobot');
   // const decepticons = sortTeam(bots, 'Decepticon');
 }
 
 module.exports = {
   calculateOverallRating,
+  sortTeam,
   battle,
 };
