@@ -82,15 +82,29 @@ function sortTeam(bots, team) {
   return sortedTeam;
 }
 
+function checkBothTeamsExist(team1, team2) {
+  if (team1 && team2) {
+    return true;
+  }
+  return false;
+}
+
 function battle(bots) {
-  // Need to check if there are both teams present
+  let autobots = [];
+  let decepticons = [];
   const botsWithRatings = calculateOverallRating(bots);
-  const autobots = SortTeam(botsWithRatings, 'Autobot');
-  const decepticons = SortTeam(botsWithRatings, 'Decepticon');
+
+  autobots = sortTeam(botsWithRatings, 'Autobot');
+  decepticons = sortTeam(botsWithRatings, 'Decepticon');
+
+  if (checkBothTeamsExist(autobots, decepticons)) {
+    return 'There is one one team based on the bots provided. Make sure there are two!';
+  }
 }
 
 module.exports = {
   calculateOverallRating,
   sortTeam,
   battle,
+  checkBothTeamsExist,
 };

@@ -4,11 +4,58 @@ const methods = require('../index.js');
 const calculateOverallRating = methods.calculateOverallRating;
 const sortTeam = methods.sortTeam;
 const battle = methods.battle;
+const checkBothTeamsExist = methods.checkBothTeamsExist;
 
 
 /*  eslint prefer-arrow-callback: 0
     func-names: 0
 */
+
+describe('Data Validation', function () {
+  const bots = [
+    {
+      name: 'Optimus Prime',
+      team: 'Autobot',
+      skills: {
+        strength: 10,
+        intelligence: 10,
+        speed: 8,
+        endurance: 10,
+        rank: 10,
+        courage: 10,
+        firepower: 8,
+        skill: 10,
+      },
+    },
+    {
+      name: 'Ravage',
+      team: 'Decepticon',
+      overallRating: 31,
+      skills: {
+        strength: 5,
+        intelligence: 8,
+        speed: 5,
+        endurance: 6,
+        rank: 7,
+        courage: 4,
+        firepower: 7,
+        skill: 10,
+      },
+    },
+  ];
+  it('Battle method return an error if there is only 1 team', function () {
+    const result = battle([bots[0]]);
+    assert.equal(result, 'There is one one team based on the bots provided. Make sure there are two!');
+  });
+  it('checkBothTeamsExist method return false if there is only 1 team', function () {
+    const result = checkBothTeamsExist([bots[0]]);
+    assert.equal(result, false);
+  });
+  it('checkBothTeamsExist method return true if there are 2 teams', function () {
+    const result = checkBothTeamsExist([bots[0]], [bots[1]]);
+    assert.equal(result, true);
+  });
+});
 
 describe('Overall Score', function () {
   it('Should return an array with bots that have an overall score attached to them.', function () {
@@ -34,7 +81,6 @@ describe('Overall Score', function () {
     assert.equal(result[0].overallRating, overallRating);
   });
 });
-
 
 describe('Team Sorting', function () {
   const bots = [
