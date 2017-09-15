@@ -83,9 +83,6 @@ function battle(bots) {
   // const decepticons = sortTeam(bots, 'Decepticon');
 }
 
-
-battle(botsData);
-
 module.exports = {
   calculateOverallRating,
   battle,

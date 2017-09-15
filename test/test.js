@@ -1,5 +1,6 @@
 const assert = require('chai').assert;
 const methods = require('../index.js');
+
 const calculateOverallRating = methods.calculateOverallRating;
 const battle = methods.battle;
 
