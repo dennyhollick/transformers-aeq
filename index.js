@@ -51,13 +51,13 @@
 // Survivors from the losing team (Autobots): Hubcap
 
 
-const bots = [
+const botsData = [
   {
     name: 'Optimus Prime',
     team: 'Autobot',
     skills: {
       strength: 10,
-      intellegence: 10,
+      intelligence: 10,
       speed: 8,
       endurance: 10,
       rank: 10,
@@ -71,7 +71,7 @@ const bots = [
     team: 'Autobot',
     skills: {
       strength: 5,
-      intellegence: 7,
+      intelligence: 7,
       speed: 3,
       endurance: 5,
       rank: 7,
@@ -85,7 +85,7 @@ const bots = [
     team: 'Autobot',
     skills: {
       strength: 2,
-      intellegence: 8,
+      intelligence: 8,
       speed: 4,
       endurance: 7,
       rank: 7,
@@ -99,7 +99,7 @@ const bots = [
     team: 'Autobot',
     skills: {
       strength: 7,
-      intellegence: 6,
+      intelligence: 6,
       speed: 6,
       endurance: 6,
       rank: 5,
@@ -113,7 +113,7 @@ const bots = [
     team: 'Autobot',
     skills: {
       strength: 7,
-      intellegence: 5,
+      intelligence: 5,
       speed: 8,
       endurance: 8,
       rank: 6,
@@ -127,7 +127,7 @@ const bots = [
     team: 'Decepticon',
     skills: {
       strength: 10,
-      intellegence: 5,
+      intelligence: 5,
       speed: 8,
       endurance: 8,
       rank: 7,
@@ -141,7 +141,7 @@ const bots = [
     team: 'Decepticon',
     skills: {
       strength: 10,
-      intellegence: 10,
+      intelligence: 10,
       speed: 4,
       endurance: 8,
       rank: 10,
@@ -155,7 +155,7 @@ const bots = [
     team: 'Decepticon',
     skills: {
       strength: 5,
-      intellegence: 8,
+      intelligence: 8,
       speed: 8,
       endurance: 4,
       rank: 6,
@@ -169,7 +169,7 @@ const bots = [
     team: 'Decepticon',
     skills: {
       strength: 5,
-      intellegence: 8,
+      intelligence: 8,
       speed: 5,
       endurance: 6,
       rank: 7,
@@ -183,7 +183,7 @@ const bots = [
     team: 'Decepticon',
     skills: {
       strength: 3,
-      intellegence: 9,
+      intelligence: 9,
       speed: 3,
       endurance: 6,
       rank: 8,
@@ -193,3 +193,38 @@ const bots = [
     },
   },
 ];
+
+// Creates new array of bots with their overall score added to object
+
+function calculateOverallRating(bots) {
+  const botsWithRatings = [];
+  bots.forEach((bot) => {
+    const currentBot = bot; // Declared currentBot because of es-lint no-param-reassign
+    const skills = bot.skills;
+    const overallRating = (skills.strength + skills.intelligence + skills.speed + skills.endurance + skills.firepower);
+    currentBot.overallRating = overallRating;
+    botsWithRatings.push(currentBot);
+  });
+  return botsWithRatings;
+}
+
+// function sortTeam(bots, team) {
+//   const currentTeam = [];
+//   bots.forEach((bot) => {
+//     if (bot.team === team) {
+//       currentTeam.push(bot);
+//     }
+//   });
+//   sortTeamByOverallRating(currentTeam);
+// }
+
+function battle(bots) {
+  // Need to check if there are both teams present
+  const botsWithRatings = calculateOverallRating(bots);
+  // const autobots = sortTeam(bots, 'Autobot');
+  // const decepticons = sortTeam(bots, 'Decepticon');
+  console.log(botsWithRatings);
+}
+
+
+battle(botsData);
