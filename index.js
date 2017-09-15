@@ -66,6 +66,11 @@ function calculateOverallRating(bots) {
   return botsWithRatings;
 }
 
+function sortTeamByOverallRating(team) {
+  team.sort((a, b) => parseFloat(a.overallRating) - parseFloat(b.overallRating));
+  return team;
+}
+
 function sortTeam(bots, team) {
   const currentTeam = [];
   bots.forEach((bot) => {
@@ -73,14 +78,15 @@ function sortTeam(bots, team) {
       currentTeam.push(bot);
     }
   });
-  return currentTeam;
+  const sortedTeam = sortTeamByOverallRating(currentTeam);
+  return sortedTeam;
 }
 
 function battle(bots) {
   // Need to check if there are both teams present
   const botsWithRatings = calculateOverallRating(bots);
-  const autobots = sortTeam(bots, 'Autobot');
-  // const decepticons = sortTeam(bots, 'Decepticon');
+  const autobots = SortTeam(botsWithRatings, 'Autobot');
+  const decepticons = SortTeam(botsWithRatings, 'Decepticon');
 }
 
 module.exports = {
