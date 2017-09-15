@@ -50,149 +50,7 @@
 // Winning team (Decepticons): Soundwave
 // Survivors from the losing team (Autobots): Hubcap
 
-
-const botsData = [
-  {
-    name: 'Optimus Prime',
-    team: 'Autobot',
-    skills: {
-      strength: 10,
-      intelligence: 10,
-      speed: 8,
-      endurance: 10,
-      rank: 10,
-      courage: 10,
-      firepower: 8,
-      skill: 10,
-    },
-  },
-  {
-    name: 'Red Alert',
-    team: 'Autobot',
-    skills: {
-      strength: 5,
-      intelligence: 7,
-      speed: 3,
-      endurance: 5,
-      rank: 7,
-      courage: 7,
-      firepower: 7,
-      skill: 8,
-    },
-  },
-  {
-    name: 'Bumblebee',
-    team: 'Autobot',
-    skills: {
-      strength: 2,
-      intelligence: 8,
-      speed: 4,
-      endurance: 7,
-      rank: 7,
-      courage: 10,
-      firepower: 1,
-      skill: 7,
-    },
-  },
-  {
-    name: 'Afterburner',
-    team: 'Autobot',
-    skills: {
-      strength: 7,
-      intelligence: 6,
-      speed: 6,
-      endurance: 6,
-      rank: 5,
-      courage: 8,
-      firepower: 7,
-      skill: 7,
-    },
-  },
-  {
-    name: 'Fireflight',
-    team: 'Autobot',
-    skills: {
-      strength: 7,
-      intelligence: 5,
-      speed: 8,
-      endurance: 8,
-      rank: 6,
-      courage: 9,
-      firepower: 7,
-      skill: 3,
-    },
-  },
-  {
-    name: 'Predaking',
-    team: 'Decepticon',
-    skills: {
-      strength: 10,
-      intelligence: 5,
-      speed: 8,
-      endurance: 8,
-      rank: 7,
-      courage: 9,
-      firepower: 9,
-      skill: 8,
-    },
-  },
-  {
-    name: 'Megatron',
-    team: 'Decepticon',
-    skills: {
-      strength: 10,
-      intelligence: 10,
-      speed: 4,
-      endurance: 8,
-      rank: 10,
-      courage: 9,
-      firepower: 10,
-      skill: 9,
-    },
-  },
-  {
-    name: 'BuzzSaw',
-    team: 'Decepticon',
-    skills: {
-      strength: 5,
-      intelligence: 8,
-      speed: 8,
-      endurance: 4,
-      rank: 6,
-      courage: 7,
-      firepower: 4,
-      skill: 9,
-    },
-  },
-  {
-    name: 'Ravage',
-    team: 'Decepticon',
-    skills: {
-      strength: 5,
-      intelligence: 8,
-      speed: 5,
-      endurance: 6,
-      rank: 7,
-      courage: 4,
-      firepower: 7,
-      skill: 10,
-    },
-  },
-  {
-    name: 'Venom',
-    team: 'Decepticon',
-    skills: {
-      strength: 3,
-      intelligence: 9,
-      speed: 3,
-      endurance: 6,
-      rank: 8,
-      courage: 9,
-      firepower: 8,
-      skill: 8,
-    },
-  },
-];
+const botsData = require('./botsData');
 
 // Creates new array of bots with their overall score added to object
 
@@ -223,8 +81,12 @@ function battle(bots) {
   const botsWithRatings = calculateOverallRating(bots);
   // const autobots = sortTeam(bots, 'Autobot');
   // const decepticons = sortTeam(bots, 'Decepticon');
-  console.log(botsWithRatings);
 }
 
 
 battle(botsData);
+
+module.exports = {
+  calculateOverallRating,
+  battle,
+};
