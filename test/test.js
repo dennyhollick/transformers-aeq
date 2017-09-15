@@ -108,11 +108,23 @@ describe('Team Sorting', function () {
     assert.equal(resultAutobot.length, 2);
   });
 
+  it('Should be sorted lowest overallRating to highest', function () {
+    const resultAutobot = sortTeam(bots, 'Autobot');
+    assert.isTrue(resultAutobot[0].overallRating < resultAutobot[1].overallRating);
+    console.log(`   Rating: ${resultAutobot[0].overallRating} < ${resultAutobot[1].overallRating}`);
+  });
+
   it('Should return an array of decepticon team members', function () {
-    const resultAutobot = sortTeam(bots, 'Decepticon');
+    const resultDecepticon = sortTeam(bots, 'Decepticon');
     console.log('   Decepticons');
-    assert.equal(resultAutobot[0].team, 'Decepticon');
-    assert.equal(resultAutobot[1].team, 'Decepticon');
-    assert.equal(resultAutobot.length, 2);
+    assert.equal(resultDecepticon[0].team, 'Decepticon');
+    assert.equal(resultDecepticon[1].team, 'Decepticon');
+    assert.equal(resultDecepticon.length, 2);
+  });
+
+  it('Should be sorted lowest overallRating to highest', function () {
+    const resultDecepticon = sortTeam(bots, 'Decepticon');
+    assert.isTrue(resultDecepticon[0].overallRating < resultDecepticon[1].overallRating);
+    console.log(`   Rating: ${resultDecepticon[0].overallRating} < ${resultDecepticon[1].overallRating}`);
   });
 });
