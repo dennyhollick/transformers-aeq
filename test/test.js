@@ -7,13 +7,14 @@ const battle = methods.battle;
 const checkBothTeamsExist = methods.checkBothTeamsExist;
 const shouldBotRun = methods.shouldBotRun;
 const checkLoser = methods.checkLoser;
+const checkBotsForErrors = methods.checkBotsForErrors;
 
 
 /*  eslint prefer-arrow-callback: 0
     func-names: 0
 */
 
-describe('Data Validation', function () {
+describe('Teams Validation', function () {
   const bots = [
     {
       name: 'Optimus Prime',
@@ -47,7 +48,7 @@ describe('Data Validation', function () {
   ];
   it('Battle method return an error if there is only 1 team', function () {
     const result = battle([bots[0]]);
-    assert.equal(result, 'err');
+    assert.equal(result, 'There is one one team based on the bots provided. Make sure there are two!');
   });
   it('checkBothTeamsExist method return false if there is only 1 team', function () {
     const result = checkBothTeamsExist([bots[0]]);
@@ -58,6 +59,131 @@ describe('Data Validation', function () {
     assert.equal(result, true);
   });
 });
+
+describe('Bot Validation', function () {
+  it('Should return false if everything is good', function () {
+    const bots = [
+      {
+        name: 'Red Alert',
+        team: 'Autobot',
+        skills: {
+          strength: 5,
+          intelligence: 7,
+          speed: 3,
+          endurance: 5,
+          rank: 7,
+          courage: 7,
+          firepower: 7,
+          skill: 8,
+        },
+      },
+      {
+        name: 'Ravage',
+        team: 'Decepticon',
+        skills: {
+          strength: 5,
+          intelligence: 8,
+          speed: 5,
+          endurance: 6,
+          rank: 7,
+          courage: 4,
+          firepower: 7,
+          skill: 10,
+        },
+      },
+    ];
+    const result = checkBotsForErrors(bots);
+    assert.equal(result, false);
+  });
+  it('Should return an error if a name is missing', function () {
+    const bot = [
+      {
+        name: '',
+        team: 'Autobot',
+        skills: {
+          intelligence: 10,
+          speed: 8,
+          endurance: 10,
+          rank: 10,
+          courage: 10,
+          firepower: 8,
+          skill: 10,
+        },
+      },
+    ];
+    const result = checkBotsForErrors(bot);
+    assert.equal(result, 'a bot has no name');
+  });
+  it('Should return an error if a team name is incorrect', function () {
+    const bot = [
+      {
+        name: 'Optimus Prime',
+        team: 'Autobit',
+        skills: {
+          strength: 10,
+          intelligence: 10,
+          speed: 8,
+          endurance: 10,
+          rank: 10,
+          courage: 10,
+          firepower: 8,
+          skill: 10,
+        },
+      },
+    ];
+    const result = checkBotsForErrors(bot);
+    assert.equal(result, 'bot Optimus Prime has incorrect team.');
+  });
+  it('Should return an error if a team name is missing', function () {
+    const bot = [
+      {
+        name: 'Optimus Prime',
+        skills: {
+          strength: 10,
+          intelligence: 10,
+          speed: 8,
+          endurance: 10,
+          rank: 10,
+          courage: 10,
+          firepower: 8,
+          skill: 10,
+        },
+      },
+    ];
+    const result = checkBotsForErrors(bot);
+    assert.equal(result, 'bot Optimus Prime has incorrect team.');
+  });
+  it('Should return an error if a skill is missing', function () {
+    const bot = [
+      {
+        name: 'Optimus Prime',
+        team: 'Autobot',
+        skills: {
+          intelligence: 10,
+          speed: 8,
+          endurance: 10,
+          rank: 10,
+          courage: 10,
+          firepower: 8,
+          skill: 10,
+        },
+      },
+    ];
+    const result = checkBotsForErrors(bot);
+    assert.equal(result, 'bot Optimus Prime is missing a skill.');
+  });
+  it('Should return an error if all skills are missing', function () {
+    const bot = [
+      {
+        name: 'Optimus Prime',
+        team: 'Autobot',
+      },
+    ];
+    const result = checkBotsForErrors(bot);
+    assert.equal(result, 'bot Optimus Prime has no skills.');
+  });
+});
+
 
 describe('Overall Score', function () {
   it('Should return an array with bots that have an overall score attached to them.', function () {
