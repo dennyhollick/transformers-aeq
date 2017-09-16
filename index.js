@@ -115,10 +115,17 @@ function checkBotsForErrors(bots) {
 // Checks to see if the fighting bot is a 'super bot'
 
 function isBotSuperBot(bot) {
-  if (bot.name === 'Optimus Prime' || bot.name === 'Predaking') {
-    return true;
-  } return false;
+  const botName = bot.name;
+  const superBotNames = ['Optimus Prime', 'Predaking'];
+  for (let index = 0; index < superBotNames.length; index += 1) {
+    const superBotName = superBotNames[index];
+    if (botName === superBotName) {
+      return true;
+    }
+  }
+  return false;
 }
+
 
 // MAIN FUNCTION
 
