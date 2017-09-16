@@ -1,5 +1,6 @@
 const assert = require('chai').assert;
 const methods = require('../index.js');
+const botsData = require('../botsData.js')
 
 const calculateOverallRating = methods.calculateOverallRating;
 const sortTeam = methods.sortTeam;
@@ -32,7 +33,7 @@ describe('Teams Validation', function () {
     },
     {
       name: 'Ravage',
-      team: 'Decepticon',
+      team: 'Deceptacon',
       overallRating: 31,
       skills: {
         strength: 5,
@@ -46,10 +47,6 @@ describe('Teams Validation', function () {
       },
     },
   ];
-  it('Battle method return an error if there is only 1 team', function () {
-    const result = battle([bots[0]]);
-    assert.equal(result, 'There is one one team based on the bots provided. Make sure there are two!');
-  });
   it('checkBothTeamsExist method return false if there is only 1 team', function () {
     const result = checkBothTeamsExist([bots[0]]);
     assert.equal(result, false);
@@ -79,7 +76,7 @@ describe('Bot Validation', function () {
       },
       {
         name: 'Ravage',
-        team: 'Decepticon',
+        team: 'Deceptacon',
         skills: {
           strength: 5,
           intelligence: 8,
@@ -244,7 +241,7 @@ describe('Team Sorting', function () {
     },
     {
       name: 'Ravage',
-      team: 'Decepticon',
+      team: 'Deceptacon',
       overallRating: 31,
       skills: {
         strength: 5,
@@ -259,7 +256,7 @@ describe('Team Sorting', function () {
     },
     {
       name: 'Venom',
-      team: 'Decepticon',
+      team: 'Deceptacon',
       overallRating: 29,
       skills: {
         strength: 3,
@@ -288,18 +285,18 @@ describe('Team Sorting', function () {
     console.log(`   Rating: ${resultAutobot[0].overallRating} < ${resultAutobot[1].overallRating}`);
   });
 
-  it('Should return an array of decepticon team members', function () {
-    const resultDecepticon = sortTeam(bots, 'Decepticon');
-    console.log('   Decepticons');
-    assert.equal(resultDecepticon[0].team, 'Decepticon');
-    assert.equal(resultDecepticon[1].team, 'Decepticon');
-    assert.equal(resultDecepticon.length, 2);
+  it('Should return an array of deceptacon team members', function () {
+    const resultDeceptacon = sortTeam(bots, 'Deceptacon');
+    console.log('   Deceptacons');
+    assert.equal(resultDeceptacon[0].team, 'Deceptacon');
+    assert.equal(resultDeceptacon[1].team, 'Deceptacon');
+    assert.equal(resultDeceptacon.length, 2);
   });
 
   it('Should be sorted lowest overallRating to highest', function () {
-    const resultDecepticon = sortTeam(bots, 'Decepticon');
-    assert.isTrue(resultDecepticon[0].overallRating < resultDecepticon[1].overallRating);
-    console.log(`   Rating: ${resultDecepticon[0].overallRating} < ${resultDecepticon[1].overallRating}`);
+    const resultDeceptacon = sortTeam(bots, 'Deceptacon');
+    assert.isTrue(resultDeceptacon[0].overallRating < resultDeceptacon[1].overallRating);
+    console.log(`   Rating: ${resultDeceptacon[0].overallRating} < ${resultDeceptacon[1].overallRating}`);
   });
 });
 
@@ -321,7 +318,7 @@ describe('Running Away', function () {
     },
     {
       name: 'Megatron',
-      team: 'Decepticon',
+      team: 'Deceptacon',
       skills: {
         strength: 10,
         intelligence: 10,
@@ -335,7 +332,7 @@ describe('Running Away', function () {
     },
     {
       name: 'Ravage',
-      team: 'Decepticon',
+      team: 'Deceptacon',
       overallRating: 31,
       skills: {
         strength: 5,
@@ -378,7 +375,7 @@ describe('Fighting', function () {
     },
     {
       name: 'Megatron',
-      team: 'Decepticon',
+      team: 'Deceptacon',
       skills: {
         strength: 10,
         intelligence: 10,
@@ -392,7 +389,7 @@ describe('Fighting', function () {
     },
     {
       name: 'Ravage',
-      team: 'Decepticon',
+      team: 'Deceptacon',
       overallRating: 31,
       skills: {
         strength: 5,
@@ -413,5 +410,51 @@ describe('Fighting', function () {
   it('Both should lose the fight and no loser declared if either is within 3 points of strength', function () {
     const result = checkLoser(bots[0], bots[1]);
     assert.equal(result, false);
+  });
+});
+
+
+describe('Battle Scenarios', function () {
+  it('Should return a winner and survivors given the right data', function () {
+    const bots = botsData;
+    const result = battle(bots);
+    assert.equal(result,
+      'Battles: 5\nThe winning team are the Deceptacon with survivor(s): Predaking Megatron \nThe losing team are the Autobots with survivor(s): Optimus Prime '
+    );
+  });
+  it('Should return an error if there is only one team', function () {
+    const bots = [
+      {
+        name: 'Megatron',
+        team: 'Deceptacon',
+        skills: {
+          strength: 10,
+          intelligence: 10,
+          speed: 4,
+          endurance: 8,
+          rank: 10,
+          courage: 9,
+          firepower: 10,
+          skill: 9,
+        },
+      },
+      {
+        name: 'Ravage',
+        team: 'Deceptacon',
+        overallRating: 31,
+        skills: {
+          strength: 5,
+          intelligence: 8,
+          speed: 5,
+          endurance: 6,
+          rank: 7,
+          courage: 4,
+          firepower: 7,
+          skill: 10,
+        },
+      },
+    ];
+    const result = battle(bots);
+    assert.equal(result, 'There is one team based on the bots provided. Make sure there are two!');
   });
 });
