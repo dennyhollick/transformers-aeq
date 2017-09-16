@@ -78,6 +78,7 @@ typings/
 .Trashes
 ehthumbs.db
 Thumbs.db
+.vscode
 
 # Packages #
 ############
