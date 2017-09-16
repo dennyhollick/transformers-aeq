@@ -105,15 +105,15 @@ function checkLoser(bot1, bot2) {
   return false;
 }
 
-function determineWinners(autobotScore, decepticonScore) {
+function determineWinners(autobotScore, decepticonScore, autobots, decepticons) {
   if (autobotScore > decepticonScore) {
-    return 'AutoBots';
+    return autobots;
   } else if (decepticonScore > autobotScore) {
-    return 'Decepticons';
+    return decepticons;
   } return false;
 }
 
-function getSurvivors(survivors) {
+function determineSurvivors(survivors) {
   let survivorsNames = '';
   if (survivors) {
     survivors.forEach((survivor) => {
@@ -189,14 +189,30 @@ function battle(bots) {
     }
     console.log(`Autobots: ${autobotScore} | Decepticons: ${decepticonScore}`);
   }
-  const winners = determineWinners(autobotScore, decepticonScore);
-  const battleOutcome = winners ? `The winning team is the ${winners}` : 'The outcome is a tie!';
-  const decepticonSurvivors = decepticons.length > 0 ? getSurvivors(decepticons) : 'none';
-  const autobotSurvivors = autobots.length > 0 ? getSurvivors(autobots) : 'none';
+
+  let winningBots;
+  let winningTeamName;
+  let winningTeamSurvivorNames;
+  let losingBots;
+  let losingBotsTeamName;
+  let losingBotsSurvivors;
+  const remainingSurvivors = determineSurvivors(autobots.concat(decepticons));
+
+  if (autobotScore !== decepticonScore) {
+    winningBots = determineWinners(autobotScore, decepticonScore, autobots, decepticons);
+    winningTeamName = winningBots[0].team;
+    winningTeamSurvivorNames = determineSurvivors(winningBots);
+    losingBots = winningBots === autobots ? decepticons : autobots;
+    losingBotsTeamName = winningTeamName === 'Autobots' ? 'Decepticons' : 'Autobots';
+    losingBotsSurvivors = losingBots ? `with survivor(s): ${determineSurvivors(losingBots)}` : 'but there are no survivors';
+  }
+
+  const battleOutcome = winningBots ? `The winning team are the ${winningTeamName} with survivor(s): ${winningTeamSurvivorNames}` : 'It was a tie!';
+  const losingteamOutput = losingBots ? `The losing team are the ${losingBotsTeamName} ${losingBotsSurvivors}` : `Survivors are ${remainingSurvivors}`;
 
   console.log(`Battles: ${battleNumber}`);
   console.log(battleOutcome);
-  console.log(`Decepticon Survivors: ${decepticonSurvivors} | Autobot Survivors: ${autobotSurvivors} `);
+  console.log(losingteamOutput);
 }
 
 battle(botsData);
