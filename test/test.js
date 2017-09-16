@@ -518,4 +518,38 @@ describe('Battle Scenarios', function () {
     const result = battle(bots);
     assert.equal(result, 'There is one team based on the bots provided. Make sure there are two!');
   });
+  it('Everyone should blow up if Optimus Prime and Predaking face off', function () {
+    const bots = [
+      {
+        name: 'Optimus Prime',
+        team: 'Autobot',
+        skills: {
+          strength: 10,
+          intelligence: 10,
+          speed: 8,
+          endurance: 10,
+          rank: 10,
+          courage: 10,
+          firepower: 8,
+          skill: 10,
+        },
+      },
+      {
+        name: 'Predaking',
+        team: 'Deceptacon',
+        skills: {
+          strength: 10,
+          intelligence: 5,
+          speed: 8,
+          endurance: 8,
+          rank: 7,
+          courage: 9,
+          firepower: 9,
+          skill: 8,
+        },
+      },
+    ];
+    const result = battle(bots);
+    assert.equal(result, 'Optimus Prime and Predaking have faced off, meaning everyone has died in an explosion!');
+  });
 });

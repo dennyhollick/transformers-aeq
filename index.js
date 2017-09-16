@@ -198,6 +198,9 @@ function battle(bots) {
 
     // Check first to see if any bot runs away and remove from array. Only run the second if the first fails. 
     // Else continue and check to see if there is a loser in a battle
+    if (isBotSuperBot(autobotFighter) && isBotSuperBot(deceptaconFighter)) {
+      return 'Optimus Prime and Predaking have faced off, meaning everyone has died in an explosion!';
+    }
 
     if (shouldBotRun(autobotFighter, deceptaconFighter)) {
       autobotScore += 1;
