@@ -146,6 +146,12 @@ function checkBotsForErrors(bots) {
   return false;
 }
 
+function isBotSuperBot(bot) {
+  if (bot.name === 'Optimus Prime' || bot.name === 'Predaking') {
+    return true;
+  } return false;
+}
+
 function battle(bots) {
   let autobots = [];
   let deceptacons = [];
@@ -189,37 +195,26 @@ function battle(bots) {
 
     const autobotFighter = autobots[0];
     const deceptaconFighter = deceptacons[0];
-    // console.log(`Battle #${battleNumber}/${maxRounds}:`);
-    // console.log(`${autobotFighter.name} VS ${deceptaconFighter.name}`);
 
-    // Check first to see if any bot runs away and remove from array. Only run the second if the first fails. Else continue.
+    // Check first to see if any bot runs away and remove from array. Only run the second if the first fails. 
+    // Else continue and check to see if there is a loser in a battle
 
     if (shouldBotRun(autobotFighter, deceptaconFighter)) {
-      // console.log(`${deceptaconFighter.name} the ${deceptaconFighter.team} fighter ran away!`);
       autobotScore += 1;
       deceptacons.shift();
     } else if (shouldBotRun(deceptaconFighter, autobotFighter)) {
-      // console.log(`${autobotFighter.name} the ${autobotFighter.team} fighter ran away!`);
       deceptaconScore += 1;
       autobots.shift();
-    }
-
-    // Check to see if there is a loser in a battle
-
-    else if (checkLoser(autobotFighter, deceptaconFighter)) {
-      // console.log(`${deceptaconFighter.name} the ${deceptaconFighter.team} fighter dies!`);
+    } else if (checkLoser(autobotFighter, deceptaconFighter)) {
       autobotScore += 1;
       deceptacons.shift();
     } else if (checkLoser(deceptaconFighter, autobotFighter)) {
-      // console.log(`${autobotFighter.name} the ${autobotFighter.team} fighter dies!`);
       deceptaconScore += 1;
       autobots.shift();
     } else {
       autobots.shift();
       deceptacons.shift();
-      // console.log('Both figters died!');
     }
-    // console.log(`Autobots: ${autobotScore} | Deceptacons: ${deceptaconScore}`);
   }
 
   let winningBots;
@@ -253,6 +248,5 @@ module.exports = {
   shouldBotRun,
   checkLoser,
   checkBotsForErrors,
+  isBotSuperBot,
 };
-
-// console.log(battle(botsData));

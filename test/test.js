@@ -9,6 +9,7 @@ const checkBothTeamsExist = methods.checkBothTeamsExist;
 const shouldBotRun = methods.shouldBotRun;
 const checkLoser = methods.checkLoser;
 const checkBotsForErrors = methods.checkBotsForErrors;
+const isBotSuperBot = methods.isBotSuperBot;
 
 
 /*  eslint prefer-arrow-callback: 0
@@ -297,6 +298,66 @@ describe('Team Sorting', function () {
     const resultDeceptacon = sortTeam(bots, 'Deceptacon');
     assert.isTrue(resultDeceptacon[0].overallRating < resultDeceptacon[1].overallRating);
     console.log(`   Rating: ${resultDeceptacon[0].overallRating} < ${resultDeceptacon[1].overallRating}`);
+  });
+});
+
+describe('SuperBot Powers', function () {
+  const bots = [
+    {
+      name: 'Optimus Prime',
+      team: 'Autobot',
+      skills: {
+        strength: 10,
+        intelligence: 10,
+        speed: 8,
+        endurance: 10,
+        rank: 10,
+        courage: 10,
+        firepower: 8,
+        skill: 10,
+      },
+    },
+    {
+      name: 'Predaking',
+      team: 'Deceptacon',
+      skills: {
+        strength: 10,
+        intelligence: 5,
+        speed: 8,
+        endurance: 8,
+        rank: 7,
+        courage: 9,
+        firepower: 9,
+        skill: 8,
+      },
+    },
+    {
+      name: 'Ravage',
+      team: 'Deceptacon',
+      overallRating: 31,
+      skills: {
+        strength: 5,
+        intelligence: 8,
+        speed: 5,
+        endurance: 6,
+        rank: 7,
+        courage: 4,
+        firepower: 7,
+        skill: 10,
+      },
+    },
+  ];
+  it('Bot should be identified as superbot if Optimus Prime', function () {
+    const result = isBotSuperBot(bots[0]);
+    assert.equal(result, true);
+  });
+  it('Bot should be identified as superbot if Predaking', function () {
+    const result = isBotSuperBot(bots[1]);
+    assert.equal(result, true);
+  });
+  it('Bot should NOT be identified as superbot if NOT Optimus Prime or Predaking', function () {
+    const result = isBotSuperBot(bots[2]);
+    assert.equal(result, false);
   });
 });
 
