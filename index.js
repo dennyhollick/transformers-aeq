@@ -196,13 +196,22 @@ function battle(bots) {
     const autobotFighter = autobots[0];
     const deceptaconFighter = deceptacons[0];
 
-    // Check first to see if any bot runs away and remove from array. Only run the second if the first fails. 
-    // Else continue and check to see if there is a loser in a battle
+    // If there is a faceoff between superbots, the scenario ends.
+
     if (isBotSuperBot(autobotFighter) && isBotSuperBot(deceptaconFighter)) {
       return 'Optimus Prime and Predaking have faced off, meaning everyone has died in an explosion!';
     }
 
-    if (shouldBotRun(autobotFighter, deceptaconFighter)) {
+    // Check first to see if any bot runs away and remove from array. Only run the second if the first fails. 
+    // Else continue and check to see if there is a loser in a battle
+
+    if (isBotSuperBot(autobotFighter)) {
+      autobotScore += 1;
+      deceptacons.shift();
+    } else if (isBotSuperBot(deceptaconFighter)) {
+      deceptaconScore += 1;
+      autobots.shift();
+    } else if (shouldBotRun(autobotFighter, deceptaconFighter)) {
       autobotScore += 1;
       deceptacons.shift();
     } else if (shouldBotRun(deceptaconFighter, autobotFighter)) {
@@ -233,8 +242,8 @@ function battle(bots) {
     winningTeamName = winningBots[0].team;
     winningTeamSurvivorNames = determineSurvivors(winningBots);
     losingBots = winningBots === autobots ? deceptacons : autobots;
-    losingBotsTeamName = winningTeamName === 'Autobots' ? 'Deceptacons' : 'Autobots';
-    losingBotsSurvivors = losingBots ? `with survivor(s): ${determineSurvivors(losingBots)}` : 'but there are no survivors';
+    losingBotsTeamName = winningTeamName === 'Autobot' ? 'Deceptacons' : 'Autobots';
+    losingBotsSurvivors = losingBots.length ? `with survivor(s): ${determineSurvivors(losingBots)}` : 'but there are no survivors';
   }
 
   const battleOutcome = winningBots ? `The winning team are the ${winningTeamName} with survivor(s): ${winningTeamSurvivorNames}` : 'It was a tie!';
