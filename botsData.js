@@ -71,7 +71,7 @@ const botsData = [
   },
   {
     name: 'Predaking',
-    team: 'Decepticon',
+    team: 'Deceptacon',
     skills: {
       strength: 10,
       intelligence: 5,
@@ -85,7 +85,7 @@ const botsData = [
   },
   {
     name: 'Megatron',
-    team: 'Decepticon',
+    team: 'Deceptacon',
     skills: {
       strength: 10,
       intelligence: 10,
@@ -99,7 +99,7 @@ const botsData = [
   },
   {
     name: 'BuzzSaw',
-    team: 'Decepticon',
+    team: 'Deceptacon',
     skills: {
       strength: 5,
       intelligence: 8,
@@ -113,7 +113,7 @@ const botsData = [
   },
   {
     name: 'Ravage',
-    team: 'Decepticon',
+    team: 'Deceptacon',
     skills: {
       strength: 5,
       intelligence: 8,
@@ -127,7 +127,7 @@ const botsData = [
   },
   {
     name: 'Venom',
-    team: 'Decepticon',
+    team: 'Deceptacon',
     skills: {
       strength: 3,
       intelligence: 9,
