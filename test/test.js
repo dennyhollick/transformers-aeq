@@ -1,3 +1,13 @@
+// ESLint config
+
+/*  eslint prefer-arrow-callback: 0,
+    func-names: 0,
+    no-undef: 0,
+    max-len: 0,
+    no-console: 0, */
+
+// Method & data imports
+
 const assert = require('chai').assert;
 const methods = require('../index.js');
 const botsData = require('../botsData.js');
@@ -11,12 +21,9 @@ const checkLoser = methods.checkLoser;
 const checkBotsForErrors = methods.checkBotsForErrors;
 const isBotSuperBot = methods.isBotSuperBot;
 
+// VALIDATIONS
 
-/*  eslint prefer-arrow-callback: 0
-    func-names: 0
-*/
-
-describe('Teams Validation', function () {
+describe('Teams Validation', () => {
   const bots = [
     {
       name: 'Optimus Prime',
@@ -58,7 +65,7 @@ describe('Teams Validation', function () {
   });
 });
 
-describe('Bot Validation', function () {
+describe('Bot Validation', () => {
   it('Should return false if everything is good', function () {
     const bots = [
       {
@@ -182,8 +189,9 @@ describe('Bot Validation', function () {
   });
 });
 
+// SCORE 
 
-describe('Overall Score', function () {
+describe('Overall Score', () => {
   it('Should return an array with bots that have an overall score attached to them.', function () {
     const bot = [
       {
@@ -208,7 +216,9 @@ describe('Overall Score', function () {
   });
 });
 
-describe('Team Sorting', function () {
+// SORTING
+
+describe('Team Sorting', () => {
   const bots = [
     {
       name: 'Optimus Prime',
@@ -301,7 +311,9 @@ describe('Team Sorting', function () {
   });
 });
 
-describe('SuperBot Powers', function () {
+// SUPERBOT POWERS
+
+describe('SuperBot Powers', () => {
   const bots = [
     {
       name: 'Optimus Prime',
@@ -361,7 +373,9 @@ describe('SuperBot Powers', function () {
   });
 });
 
-describe('Running Away', function () {
+// RUNNING AWAY
+
+describe('Running Away', () => {
   const bots = [
     {
       name: 'Optimus Prime',
@@ -417,8 +431,9 @@ describe('Running Away', function () {
   });
 });
 
+// FIGHTING
 
-describe('Fighting', function () {
+describe('Fighting', () => {
   const bots = [
     {
       name: 'Optimus Prime',
@@ -474,8 +489,9 @@ describe('Fighting', function () {
   });
 });
 
+// BATTLE TESTS
 
-describe('Battle Scenarios', function () {
+describe('Battle Scenarios', () => {
   it('Should return a winner and survivors given the right data', function () {
     const bots = botsData;
     const result = battle(bots);
