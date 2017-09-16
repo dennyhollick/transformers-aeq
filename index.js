@@ -126,6 +126,20 @@ function isBotSuperBot(bot) {
   return false;
 }
 
+function areBothTeamsStillAlive(autobots, deceptacons) {
+  if (autobots.length > 0 && deceptacons.length > 0) {
+    return true;
+  }
+  return false;
+}
+
+function battleNumberLessThanMax(round, maxRounds) {
+  if (round < maxRounds) {
+    return true;
+  }
+  return false;
+}
+
 
 // MAIN FUNCTION
 
@@ -162,11 +176,11 @@ function battle(bots) {
 
   // Sets the max rounds based on the team sizes. The smallest team dictates maxRounds.
 
-  const maxRounds = autobots.length <= deceptacons.length ? autobots.length : deceptacons.length;
+  const maxRounds = Math.min(autobots.length, deceptacons.length);
 
   // As long as there are still bots on each team and maxRounds isn't met, this simulation will run.
 
-  while ((autobots.length > 0 && deceptacons.length > 0) && maxRounds > battleNumber) {
+  while (areBothTeamsStillAlive(autobots, deceptacons) && battleNumberLessThanMax(battleNumber, maxRounds)) {
     // Start by increasing the battleNumber
 
     battleNumber += 1;
