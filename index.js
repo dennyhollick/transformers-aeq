@@ -83,6 +83,8 @@ function sortTeam(bots, team) {
 }
 
 function checkBothTeamsExist(team1, team2) {
+  console.log(team1);
+  console.log(team2);
   if (team1 && team2) {
     return true;
   }
@@ -96,31 +98,108 @@ function shouldBotRun(bot1, bot2) {
   return false;
 }
 
+function checkLoser(bot1, bot2) {
+  if (bot1.skills.strength - bot2.skills.strength >= 3) {
+    return true;
+  }
+  return false;
+}
+
+function determineWinners(autobotScore, decepticonScore) {
+  if (autobotScore > decepticonScore) {
+    return 'AutoBots';
+  } else if (decepticonScore > autobotScore) {
+    return 'Decepticons';
+  } return false;
+}
+
+function getSurvivors(survivors) {
+  let survivorsNames = '';
+  if (survivors) {
+    survivors.forEach((survivor) => {
+      survivorsNames += `${survivor.name} `;
+    });
+  }
+  return survivorsNames;
+}
+
 function battle(bots) {
   let autobots = [];
   let decepticons = [];
+  let battleNumber = 0;
+  let autobotScore = 0;
+  let decepticonScore = 0;
+
+  // Calculate and save the overall rating of each bot
+
   const botsWithRatings = calculateOverallRating(bots);
+
+  // Sort bots by team, and in order of weakest to strongest.
 
   autobots = sortTeam(botsWithRatings, 'Autobot');
   decepticons = sortTeam(botsWithRatings, 'Decepticon');
 
-  if (checkBothTeamsExist(autobots, decepticons)) {
+  // Check first that there are now bots on each team. If not, new inputs are needed an error thrown.
+
+  if (!checkBothTeamsExist(autobots, decepticons)) {
     console.log('There is one one team based on the bots provided. Make sure there are two!');
     return 'err';
   }
 
-  while (autobots && decepticons) {
+  // Sets the max rounds based on the team sizes. The smallest team dictates maxRounds.
+
+  const maxRounds = autobots.length <= decepticons.length ? autobots.length : decepticons.length;
+
+  // As long as there are still bots on each team and maxRounds isn't met, this simulation will run.
+
+  while ((autobots.length > 0 && decepticons.length > 0) && maxRounds > battleNumber) {
+    // Take the first bot in line on each team
+    battleNumber += 1;
     const autobotFighter = autobots[0];
     const decepticonFighter = decepticons[0];
+    console.log(`Battle #${battleNumber}/${maxRounds}:`);
+    console.log(`${autobotFighter.name} VS ${decepticonFighter.name}`);
+
+    // Check first to see if any bot runs away and remove from array. Only run the second if the first fails. Else continue.
 
     if (shouldBotRun(autobotFighter, decepticonFighter)) {
       console.log(`${decepticonFighter.name} the ${decepticonFighter.team} fighter ran away!`);
-    }
-    if (shouldBotRun(decepticonFighter, autobotFighter)) {
+      autobotScore += 1;
+      decepticons.shift();
+    } else if (shouldBotRun(decepticonFighter, autobotFighter)) {
       console.log(`${autobotFighter.name} the ${autobotFighter.team} fighter ran away!`);
+      decepticonScore += 1;
+      autobots.shift();
     }
+
+    // Check to see if there is a loser in a battle
+
+    else if (checkLoser(autobotFighter, decepticonFighter)) {
+      console.log(`${decepticonFighter.name} the ${decepticonFighter.team} fighter dies!`);
+      autobotScore += 1;
+      decepticons.shift();
+    } else if (checkLoser(decepticonFighter, autobotFighter)) {
+      console.log(`${autobotFighter.name} the ${autobotFighter.team} fighter dies!`);
+      decepticonScore += 1;
+      autobots.shift();
+    } else {
+      autobots.shift();
+      decepticons.shift();
+      console.log('Both figters died!');
+    }
+    console.log(`Autobots: ${autobotScore} | Decepticons: ${decepticonScore}`);
   }
+  const winners = determineWinners(autobotScore, decepticonScore);
+  const battleOutcome = winners ? `The winning team is the ${winners}` : 'The outcome is a tie!';
+  const decepticonSurvivors = decepticons.length > 0 ? getSurvivors(decepticons) : 'none';
+  const autobotSurvivors = autobots.length > 0 ? getSurvivors(autobots) : 'none';
+
+  console.log(`Battles: ${battleNumber}`);
+  console.log(battleOutcome);
+  console.log(`Decepticon Survivors: ${decepticonSurvivors} | Autobot Survivors: ${autobotSurvivors} `);
 }
+
+battle(botsData);
 
 module.exports = {
   calculateOverallRating,
@@ -128,4 +207,5 @@ module.exports = {
   battle,
   checkBothTeamsExist,
   shouldBotRun,
+  checkLoser,
 };
