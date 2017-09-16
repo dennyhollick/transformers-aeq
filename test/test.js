@@ -6,6 +6,7 @@ const sortTeam = methods.sortTeam;
 const battle = methods.battle;
 const checkBothTeamsExist = methods.checkBothTeamsExist;
 const shouldBotRun = methods.shouldBotRun;
+const checkLoser = methods.checkLoser;
 
 
 /*  eslint prefer-arrow-callback: 0
@@ -228,6 +229,63 @@ describe('Running Away', function () {
   });
   it('Bot should NOT run away if opponent is 4 or more points of courage and 3 or more points of strength', function () {
     const result = shouldBotRun(bots[0], bots[1]);
+    assert.equal(result, false);
+  });
+});
+
+
+describe('Fighting', function () {
+  const bots = [
+    {
+      name: 'Optimus Prime',
+      team: 'Autobot',
+      skills: {
+        strength: 10,
+        intelligence: 10,
+        speed: 8,
+        endurance: 10,
+        rank: 10,
+        courage: 10,
+        firepower: 8,
+        skill: 10,
+      },
+    },
+    {
+      name: 'Megatron',
+      team: 'Decepticon',
+      skills: {
+        strength: 10,
+        intelligence: 10,
+        speed: 4,
+        endurance: 8,
+        rank: 10,
+        courage: 9,
+        firepower: 10,
+        skill: 9,
+      },
+    },
+    {
+      name: 'Ravage',
+      team: 'Decepticon',
+      overallRating: 31,
+      skills: {
+        strength: 5,
+        intelligence: 8,
+        speed: 5,
+        endurance: 6,
+        rank: 7,
+        courage: 4,
+        firepower: 7,
+        skill: 10,
+      },
+    },
+  ];
+  it('Bot should die opponent is 3 or more points of strength', function () {
+    const result = checkLoser(bots[0], bots[2]);
+    assert.equal(result, true);
+  });
+  it('Both should lose the fight and no loser declared if either is within 3 points of strength', function () {
+    const result = checkLoser(bots[0], bots[1]);
     assert.equal(result, false);
   });
 });
