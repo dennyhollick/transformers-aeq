@@ -1,6 +1,6 @@
 const assert = require('chai').assert;
 const methods = require('../index.js');
-const botsData = require('../botsData.js')
+const botsData = require('../botsData.js');
 
 const calculateOverallRating = methods.calculateOverallRating;
 const sortTeam = methods.sortTeam;
@@ -479,9 +479,7 @@ describe('Battle Scenarios', function () {
   it('Should return a winner and survivors given the right data', function () {
     const bots = botsData;
     const result = battle(bots);
-    assert.equal(result,
-      'Battles: 5\nThe winning team are the Deceptacon with survivor(s): Predaking Megatron \nThe losing team are the Autobots with survivor(s): Optimus Prime '
-    );
+    assert.equal(result, 'Battles: 5\nThe winning team are the Deceptacon with survivor(s): Predaking Megatron \nThe losing team are the Autobots with survivor(s): Optimus Prime ');
   });
   it('Should return an error if there is only one team', function () {
     const bots = [
@@ -551,5 +549,169 @@ describe('Battle Scenarios', function () {
     ];
     const result = battle(bots);
     assert.equal(result, 'Optimus Prime and Predaking have faced off, meaning everyone has died in an explosion!');
+  });
+  it('A superbot will win against everyone', function () {
+    const bots = [
+      {
+        name: 'Optimus Prime',
+        team: 'Autobot',
+        skills: {
+          strength: 10,
+          intelligence: 10,
+          speed: 8,
+          endurance: 10,
+          rank: 10,
+          courage: 10,
+          firepower: 8,
+          skill: 10,
+        },
+      },
+      {
+        name: 'Megatron',
+        team: 'Deceptacon',
+        skills: {
+          strength: 10,
+          intelligence: 10,
+          speed: 10,
+          endurance: 10,
+          rank: 10,
+          courage: 10,
+          firepower: 10,
+          skill: 10,
+        },
+      },
+    ];
+    const result = battle(bots);
+    assert.equal(result, 'Battles: 1\nThe winning team are the Autobot with survivor(s): Optimus Prime \nThe losing team are the Deceptacons but there are no survivors');
+  });
+  it('It should say there are no survivors on the other team if everyone is dead', function () {
+    const bots = [
+      {
+        name: 'Red Alert',
+        team: 'Autobot',
+        skills: {
+          strength: 5,
+          intelligence: 7,
+          speed: 3,
+          endurance: 5,
+          rank: 7,
+          courage: 7,
+          firepower: 7,
+          skill: 8,
+        },
+      },
+      {
+        name: 'Megatron',
+        team: 'Deceptacon',
+        skills: {
+          strength: 10,
+          intelligence: 10,
+          speed: 10,
+          endurance: 10,
+          rank: 10,
+          courage: 10,
+          firepower: 10,
+          skill: 10,
+        },
+      },
+    ];
+    const result = battle(bots);
+    assert.equal(result, 'Battles: 1\nThe winning team are the Deceptacon with survivor(s): Megatron \nThe losing team are the Autobots but there are no survivors');
+  });
+  it('It should say there are survivors on the losing team if any exist', function () {
+    const bots = [
+      {
+        name: 'Red Alert',
+        team: 'Autobot',
+        skills: {
+          strength: 5,
+          intelligence: 7,
+          speed: 3,
+          endurance: 5,
+          rank: 7,
+          courage: 7,
+          firepower: 7,
+          skill: 8,
+        },
+      },
+      {
+        name: 'Bumblebee',
+        team: 'Autobot',
+        skills: {
+          strength: 7,
+          intelligence: 8,
+          speed: 4,
+          endurance: 7,
+          rank: 7,
+          courage: 10,
+          firepower: 1,
+          skill: 7,
+        },
+      },
+      {
+        name: 'Megatron',
+        team: 'Deceptacon',
+        skills: {
+          strength: 10,
+          intelligence: 10,
+          speed: 10,
+          endurance: 10,
+          rank: 10,
+          courage: 10,
+          firepower: 10,
+          skill: 10,
+        },
+      },
+    ];
+    const result = battle(bots);
+    assert.equal(result, 'Battles: 1\nThe winning team are the Deceptacon with survivor(s): Megatron \nThe losing team are the Autobots with survivor(s): Bumblebee ');
+  });
+  it('It should say there are survivors on the winning team if any exist', function () {
+    const bots = [
+      {
+        name: 'Red Alert',
+        team: 'Autobot',
+        skills: {
+          strength: 5,
+          intelligence: 7,
+          speed: 3,
+          endurance: 5,
+          rank: 7,
+          courage: 7,
+          firepower: 7,
+          skill: 8,
+        },
+      },
+      {
+        name: 'Bumblebee',
+        team: 'Autobot',
+        skills: {
+          strength: 7,
+          intelligence: 8,
+          speed: 4,
+          endurance: 7,
+          rank: 7,
+          courage: 10,
+          firepower: 1,
+          skill: 7,
+        },
+      },
+      {
+        name: 'Megatron',
+        team: 'Deceptacon',
+        skills: {
+          strength: 1,
+          intelligence: 1,
+          speed: 1,
+          endurance: 1,
+          rank: 1,
+          courage: 1,
+          firepower: 1,
+          skill: 1,
+        },
+      },
+    ];
+    const result = battle(bots);
+    assert.equal(result, 'Battles: 1\nThe winning team are the Autobot with survivor(s): Red Alert Bumblebee \nThe losing team are the Deceptacons but there are no survivors');
   });
 });
