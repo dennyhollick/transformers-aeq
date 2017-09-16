@@ -89,6 +89,13 @@ function checkBothTeamsExist(team1, team2) {
   return false;
 }
 
+function shouldBotRun(bot1, bot2) {
+  if (((bot1.skills.courage - bot2.skills.courage) >= 4) && (bot1.skills.strength - bot2.skills.strength) >= 3) {
+    return true;
+  }
+  return false;
+}
+
 function battle(bots) {
   let autobots = [];
   let decepticons = [];
@@ -98,7 +105,20 @@ function battle(bots) {
   decepticons = sortTeam(botsWithRatings, 'Decepticon');
 
   if (checkBothTeamsExist(autobots, decepticons)) {
-    return 'There is one one team based on the bots provided. Make sure there are two!';
+    console.log('There is one one team based on the bots provided. Make sure there are two!');
+    return 'err';
+  }
+
+  while (autobots && decepticons) {
+    const autobotFighter = autobots[0];
+    const decepticonFighter = decepticons[0];
+
+    if (shouldBotRun(autobotFighter, decepticonFighter)) {
+      console.log(`${decepticonFighter.name} the ${decepticonFighter.team} fighter ran away!`);
+    }
+    if (shouldBotRun(decepticonFighter, autobotFighter)) {
+      console.log(`${autobotFighter.name} the ${autobotFighter.team} fighter ran away!`);
+    }
   }
 }
 
@@ -107,4 +127,5 @@ module.exports = {
   sortTeam,
   battle,
   checkBothTeamsExist,
+  shouldBotRun,
 };

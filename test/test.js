@@ -5,6 +5,7 @@ const calculateOverallRating = methods.calculateOverallRating;
 const sortTeam = methods.sortTeam;
 const battle = methods.battle;
 const checkBothTeamsExist = methods.checkBothTeamsExist;
+const shouldBotRun = methods.shouldBotRun;
 
 
 /*  eslint prefer-arrow-callback: 0
@@ -45,7 +46,7 @@ describe('Data Validation', function () {
   ];
   it('Battle method return an error if there is only 1 team', function () {
     const result = battle([bots[0]]);
-    assert.equal(result, 'There is one one team based on the bots provided. Make sure there are two!');
+    assert.equal(result, 'err');
   });
   it('checkBothTeamsExist method return false if there is only 1 team', function () {
     const result = checkBothTeamsExist([bots[0]]);
@@ -172,5 +173,61 @@ describe('Team Sorting', function () {
     const resultDecepticon = sortTeam(bots, 'Decepticon');
     assert.isTrue(resultDecepticon[0].overallRating < resultDecepticon[1].overallRating);
     console.log(`   Rating: ${resultDecepticon[0].overallRating} < ${resultDecepticon[1].overallRating}`);
+  });
+});
+
+describe('Running Away', function () {
+  const bots = [
+    {
+      name: 'Optimus Prime',
+      team: 'Autobot',
+      skills: {
+        strength: 10,
+        intelligence: 10,
+        speed: 8,
+        endurance: 10,
+        rank: 10,
+        courage: 10,
+        firepower: 8,
+        skill: 10,
+      },
+    },
+    {
+      name: 'Megatron',
+      team: 'Decepticon',
+      skills: {
+        strength: 10,
+        intelligence: 10,
+        speed: 4,
+        endurance: 8,
+        rank: 10,
+        courage: 9,
+        firepower: 10,
+        skill: 9,
+      },
+    },
+    {
+      name: 'Ravage',
+      team: 'Decepticon',
+      overallRating: 31,
+      skills: {
+        strength: 5,
+        intelligence: 8,
+        speed: 5,
+        endurance: 6,
+        rank: 7,
+        courage: 4,
+        firepower: 7,
+        skill: 10,
+      },
+    },
+  ];
+  it('Bot should run away if opponent is 4 or more points of courage and 3 or more points of strength', function () {
+    const result = shouldBotRun(bots[0], bots[2]);
+    assert.equal(result, true);
+  });
+  it('Bot should NOT run away if opponent is 4 or more points of courage and 3 or more points of strength', function () {
+    const result = shouldBotRun(bots[0], bots[1]);
+    assert.equal(result, false);
   });
 });
