@@ -21,7 +21,7 @@ Then run `node index.js`
 1. The inputs of bots should be and array objects in the following format:
 
 ```
-[
+const bots = [
   {
     name: 'Optimus Prime',
     team: 'Autobot',
