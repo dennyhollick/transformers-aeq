@@ -16,7 +16,8 @@ const calculateOverallRating = methods.calculateOverallRating;
 const sortTeam = methods.sortTeam;
 const battle = methods.battle;
 const checkBothTeamsExist = methods.checkBothTeamsExist;
-const shouldBotRun = methods.shouldBotRun;
+const shouldFirstBotRun = methods.shouldFirstBotRun;
+const shouldSecondBotRun = methods.shouldSecondBotRun
 const checkLoser = methods.checkLoser;
 const checkBotsForErrors = methods.checkBotsForErrors;
 const isBotSuperBot = methods.isBotSuperBot;
@@ -421,13 +422,21 @@ describe('Running Away', () => {
       },
     },
   ];
-  it('Bot should run away if opponent is 4 or more points of courage and 3 or more points of strength', function () {
-    const result = shouldBotRun(bots[0], bots[2]);
-    assert.equal(result, true);
-  });
-  it('Bot should NOT run away if opponent is 4 or more points of courage and 3 or more points of strength', function () {
-    const result = shouldBotRun(bots[0], bots[1]);
+  it('First bot should NOT run away if opponent is less than 4 points of courage and 3 or more points of strength', function () {
+    const result = shouldFirstBotRun(bots[0], bots[2]);
     assert.equal(result, false);
+  });
+  it('First bot should run away if opponent is more than 4 points of courage and 3 or more points of strength', function () {
+    const result = shouldFirstBotRun(bots[2], bots[0]);
+    assert.equal(result, true );
+  });
+  it('Second bot should NOT run away if opponent less than 4 or points of courage and 3 or more points of strength', function () {
+    const result = shouldSecondBotRun(bots[2], bots[0]);
+    assert.equal(result, false);
+  });
+  it('Second bot should run away if opponent is 4 or more points of courage and 3 or more points of strength', function () {
+    const result = shouldSecondBotRun(bots[0], bots[2]);
+    assert.equal(result, true);
   });
 });
 
@@ -495,7 +504,7 @@ describe('Battle Scenarios', () => {
   it('Should return a winner and survivors given the right data', function () {
     const bots = botsData;
     const result = battle(bots);
-    assert.equal(result, 'Battles: 5\nThe winning team are the Deceptacon with survivor(s): Predaking Megatron \nThe losing team are the Autobots with survivor(s): Optimus Prime ');
+    assert.equal(result, 'Battles: #5\nThe winning team is the Deceptacons with Predaking, Megatron remaining\nThe losing team is the Autobots with Optimus Prime remaining');
   });
   it('Should return an error if there is only one team', function () {
     const bots = [
@@ -598,7 +607,7 @@ describe('Battle Scenarios', () => {
       },
     ];
     const result = battle(bots);
-    assert.equal(result, 'Battles: 1\nThe winning team are the Autobot with survivor(s): Optimus Prime \nThe losing team are the Deceptacons but there are no survivors');
+    assert.equal(result, 'Battles: #1\nThe winning team is the Autobots with Optimus Prime remaining\nThe losing team is the Deceptacons with no survivors remaining');
   });
   it('It should say there are no survivors on the other team if everyone is dead', function () {
     const bots = [
@@ -632,7 +641,7 @@ describe('Battle Scenarios', () => {
       },
     ];
     const result = battle(bots);
-    assert.equal(result, 'Battles: 1\nThe winning team are the Deceptacon with survivor(s): Megatron \nThe losing team are the Autobots but there are no survivors');
+    assert.equal(result, 'Battles: #1\nThe winning team is the Deceptacons with Megatron remaining\nThe losing team is the Autobots with no survivors remaining');
   });
   it('It should say there are survivors on the losing team if any exist', function () {
     const bots = [
@@ -680,24 +689,10 @@ describe('Battle Scenarios', () => {
       },
     ];
     const result = battle(bots);
-    assert.equal(result, 'Battles: 1\nThe winning team are the Deceptacon with survivor(s): Megatron \nThe losing team are the Autobots with survivor(s): Bumblebee ');
+    assert.equal(result, 'Battles: #1\nThe winning team is the Deceptacons with Megatron remaining\nThe losing team is the Autobots with Bumblebee remaining');
   });
   it('It should say there are survivors on the winning team if any exist', function () {
     const bots = [
-      {
-        name: 'Red Alert',
-        team: 'Autobot',
-        skills: {
-          strength: 5,
-          intelligence: 7,
-          speed: 3,
-          endurance: 5,
-          rank: 7,
-          courage: 7,
-          firepower: 7,
-          skill: 8,
-        },
-      },
       {
         name: 'Bumblebee',
         team: 'Autobot',
@@ -728,6 +723,6 @@ describe('Battle Scenarios', () => {
       },
     ];
     const result = battle(bots);
-    assert.equal(result, 'Battles: 1\nThe winning team are the Autobot with survivor(s): Red Alert Bumblebee \nThe losing team are the Deceptacons but there are no survivors');
+    assert.equal(result, 'Battles: #1\nThe winning team is the Autobots with Bumblebee remaining\nThe losing team is the Deceptacons with no survivors remaining');
   });
 });
