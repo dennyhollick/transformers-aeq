@@ -1,4 +1,5 @@
 /*  eslint max-len: 0 */
+const testData = require('./botsData.js');
 const methods = require('./actions.js');
 
 const calculateOverallRating = methods.calculateOverallRating;
@@ -99,6 +100,8 @@ function battle(bots) {
 
   return generateReportFromBattle(autobotScore, deceptaconScore, autobots, deceptacons, battleNumber);
 }
+
+// console.log(battle(testData));
 
 // Exports for tests
 
