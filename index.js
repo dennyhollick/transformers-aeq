@@ -1,5 +1,11 @@
 /*  eslint max-len: 0 */
 
+let autobots = [];
+let deceptacons = [];
+let battleNumber = 0;
+let autobotScore = 0;
+let deceptaconScore = 0;
+
 // HELPER FUNCTIONS
 
 // Creates new array of bots with their overall score added to object
@@ -169,14 +175,11 @@ function generateReportFromBattle(autobotScore, deceptaconScore, autobots, decep
     losingSurvivors = determineSurvivors(autobots);
   } else {
     tieGame = true;
-    tieGameSurvivors = determineSurvivors(autobots) + determineSurvivors(deceptacons);
+    tieGameSurvivors = `with ${determineSurvivors(autobots)} remaining for Autobots and ${determineSurvivors(deceptacons)} remaining for Deceptacons!`;
   }
 
   if (tieGame) {
-    return (
-      `Battles: #${battleNumber}\n
-      It is a tie game with ${tieGameSurvivors} remaining
-      `);
+    return (`Battles: #${battleNumber}\nIt is a tie game ${tieGameSurvivors}`);
   }
 
   return (
@@ -189,11 +192,7 @@ function generateReportFromBattle(autobotScore, deceptaconScore, autobots, decep
 // Initializes the simulation given an array of Bots
 
 function battle(bots) {
-  let autobots = [];
-  let deceptacons = [];
-  let battleNumber = 0;
-  let autobotScore = 0;
-  let deceptaconScore = 0;
+
   const botValidationErrors = checkBotsForErrors(bots);
 
   // Validate input bots have all data is clean
@@ -283,4 +282,5 @@ module.exports = {
   checkLoser,
   checkBotsForErrors,
   isBotSuperBot,
+  generateReportFromBattle,
 };

@@ -17,10 +17,11 @@ const sortTeam = methods.sortTeam;
 const battle = methods.battle;
 const checkBothTeamsExist = methods.checkBothTeamsExist;
 const shouldFirstBotRun = methods.shouldFirstBotRun;
-const shouldSecondBotRun = methods.shouldSecondBotRun
+const shouldSecondBotRun = methods.shouldSecondBotRun;
 const checkLoser = methods.checkLoser;
 const checkBotsForErrors = methods.checkBotsForErrors;
 const isBotSuperBot = methods.isBotSuperBot;
+const generateReportFromBattle = methods.generateReportFromBattle;
 
 // VALIDATIONS
 
@@ -428,7 +429,7 @@ describe('Running Away', () => {
   });
   it('First bot should run away if opponent is more than 4 points of courage and 3 or more points of strength', function () {
     const result = shouldFirstBotRun(bots[2], bots[0]);
-    assert.equal(result, true );
+    assert.equal(result, true);
   });
   it('Second bot should NOT run away if opponent less than 4 or points of courage and 3 or more points of strength', function () {
     const result = shouldSecondBotRun(bots[2], bots[0]);
@@ -441,6 +442,110 @@ describe('Running Away', () => {
 });
 
 // FIGHTING
+
+describe('Report Generation', () => {
+  const bots = [
+    {
+      name: 'Optimus Prime',
+      team: 'Autobot',
+      skills: {
+        strength: 10,
+        intelligence: 10,
+        speed: 8,
+        endurance: 10,
+        rank: 10,
+        courage: 10,
+        firepower: 8,
+        skill: 10,
+      },
+    },
+    {
+      name: 'Megatron',
+      team: 'Deceptacon',
+      skills: {
+        strength: 10,
+        intelligence: 10,
+        speed: 4,
+        endurance: 8,
+        rank: 10,
+        courage: 9,
+        firepower: 10,
+        skill: 9,
+      },
+    },
+    {
+      name: 'Ravage',
+      team: 'Deceptacon',
+      overallRating: 31,
+      skills: {
+        strength: 5,
+        intelligence: 8,
+        speed: 5,
+        endurance: 6,
+        rank: 7,
+        courage: 4,
+        firepower: 7,
+        skill: 10,
+      },
+    },
+  ];
+  it('Autobots should win if they have a higher score with 1 survivor', function () {
+    const autobotScore = 3;
+    const deceptaconScore = 2;
+    const battleNumber = 2;
+    const autobots = [bots[0]];
+    const decepacons = [];
+    const result = generateReportFromBattle(autobotScore, deceptaconScore, autobots, decepacons, battleNumber);
+    assert.equal(result, 'Battles: #2\nThe winning team is the Autobots with Optimus Prime remaining\nThe losing team is the Deceptacons with no survivors remaining');
+  });
+  it('Autobots should win if they have a higher score with 1 survivor, and 2 deceptacon survivors', function () {
+    const autobotScore = 3;
+    const deceptaconScore = 2;
+    const battleNumber = 2;
+    const autobots = [bots[0]];
+    const decepacons = [bots[1], bots[2]];
+    const result = generateReportFromBattle(autobotScore, deceptaconScore, autobots, decepacons, battleNumber);
+    assert.equal(result, 'Battles: #2\nThe winning team is the Autobots with Optimus Prime remaining\nThe losing team is the Deceptacons with Megatron, Ravage remaining');
+  });
+  it('Decepticons should win if they have a higher score with 1 survivor', function () {
+    const autobotScore = 2;
+    const deceptaconScore = 3;
+    const battleNumber = 2;
+    const autobots = [];
+    const decepacons = [bots[1]];
+    const result = generateReportFromBattle(autobotScore, deceptaconScore, autobots, decepacons, battleNumber);
+    assert.equal(result, 'Battles: #2\nThe winning team is the Deceptacons with Megatron remaining\nThe losing team is the Autobots with no survivors remaining');
+  });
+  it('Decepticons should win if they have a higher score with 1 survivor, and a survivor on autobots', function () {
+    const autobotScore = 2;
+    const deceptaconScore = 3;
+    const battleNumber = 2;
+    const autobots = [bots[0]];
+    const decepacons = [bots[1]];
+    const result = generateReportFromBattle(autobotScore, deceptaconScore, autobots, decepacons, battleNumber);
+    assert.equal(result, 'Battles: #2\nThe winning team is the Deceptacons with Megatron remaining\nThe losing team is the Autobots with Optimus Prime remaining');
+  });
+  it('Tbere should be a tie with no survivors if everyone dies and equal score', function () {
+    const autobotScore = 2;
+    const deceptaconScore = 2;
+    const battleNumber = 2;
+    const autobots = [];
+    const decepacons = [];
+    const result = generateReportFromBattle(autobotScore, deceptaconScore, autobots, decepacons, battleNumber);
+    assert.equal(result, 'Battles: #2\nIt is a tie game with no survivors remaining for Autobots and no survivors remaining for Deceptacons!');
+  });
+  it('Tbere should be a tie with survivors if equal score', function () {
+    const autobotScore = 2;
+    const deceptaconScore = 2;
+    const battleNumber = 2;
+    const autobots = [bots[0]];
+    const decepacons = [bots[1]];
+    const result = generateReportFromBattle(autobotScore, deceptaconScore, autobots, decepacons, battleNumber);
+    assert.equal(result, 'Battles: #2\nIt is a tie game with Optimus Prime remaining for Autobots and Megatron remaining for Deceptacons!');
+  });
+});
+
+// REPORTING TESTS
 
 describe('Fighting', () => {
   const bots = [
@@ -497,6 +602,7 @@ describe('Fighting', () => {
     assert.equal(result, false);
   });
 });
+
 
 // BATTLE TESTS
 
