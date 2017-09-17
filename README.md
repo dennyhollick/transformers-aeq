@@ -20,7 +20,7 @@ Then run `node index.js`
 
 1. The inputs of bots should be and array objects in the following format:
 
-``
+```
 [
   {
     name: 'Optimus Prime',
@@ -37,7 +37,7 @@ Then run `node index.js`
     },
   },
 ]
-``
+```
 2. The weakest transformers will face the weakest on the other team first.
 3. If the teams are not balanced (eg. 2 vs 4), there will only be as many rounds as the smallest team.
 4. Transformers should have complete and correct data. If not, an error will be returned as a string.
@@ -56,5 +56,5 @@ Then run `node index.js`
 
 ## Screenshots
 
-![Test Coverage]()
-![Output From Battle]()
+![Test Coverage](https://github.com/dennyhollick/transformers-aeq/blob/master/Tests.png)
+![Output From Battle](https://github.com/dennyhollick/transformers-aeq/blob/master/Output.png)
