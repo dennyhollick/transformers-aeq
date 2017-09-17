@@ -51,7 +51,14 @@ function checkBothTeamsExist(team1, team2) {
 
 // Checks to see if a bot should run or not.
 
-function shouldBotRun(bot1, bot2) {
+function shouldFirstBotRun(bot1, bot2) {
+  if (((bot2.skills.courage - bot1.skills.courage) >= 4) && (bot2.skills.strength - bot1.skills.strength) >= 3) {
+    return true;
+  }
+  return false;
+}
+
+function shouldSecondBotRun(bot1, bot2) {
   if (((bot1.skills.courage - bot2.skills.courage) >= 4) && (bot1.skills.strength - bot2.skills.strength) >= 3) {
     return true;
   }
@@ -80,11 +87,13 @@ function determineWinners(autobotScore, deceptaconScore, autobots, deceptacons) 
 // Moves the survivor names into a string to be returned part of the final return statement in the battle.
 
 function determineSurvivors(survivors) {
-  let survivorsNames = '';
-  if (survivors) {
+  let survivorsNames = 'no survivors';
+  if (survivors.length) {
+    survivorsNames = '';
     survivors.forEach((survivor) => {
-      survivorsNames += `${survivor.name} `;
+      survivorsNames += `${survivor.name}, `;
     });
+    survivorsNames = survivorsNames.substring(0, survivorsNames.length - 2);
   }
   return survivorsNames;
 }
@@ -138,6 +147,40 @@ function battleNumberLessThanMax(round, maxRounds) {
     return true;
   }
   return false;
+}
+
+function generateReportFromBattle(autobotScore, deceptaconScore, autobots, deceptacons, battleNumber) {
+  let winningTeamName;
+  let winningSurvivors;
+  let losingTeamName;
+  let losingSurvivors;
+  let tieGame;
+  let tieGameSurvivors;
+
+  if (autobotScore > deceptaconScore) {
+    winningTeamName = 'Autobots';
+    winningSurvivors = determineSurvivors(autobots);
+    losingTeamName = 'Deceptacons';
+    losingSurvivors = determineSurvivors(deceptacons);
+  } else if (deceptaconScore > autobotScore) {
+    winningTeamName = 'Deceptacons';
+    winningSurvivors = determineSurvivors(deceptacons);
+    losingTeamName = 'Autobots';
+    losingSurvivors = determineSurvivors(autobots);
+  } else {
+    tieGame = true;
+    tieGameSurvivors = determineSurvivors(autobots) + determineSurvivors(deceptacons);
+  }
+
+  if (tieGame) {
+    return (
+      `Battles: #${battleNumber}\n
+      It is a tie game with ${tieGameSurvivors} remaining
+      `);
+  }
+
+  return (
+    `Battles: #${battleNumber}\nThe winning team is the ${winningTeamName} with ${winningSurvivors} remaining\nThe losing team is the ${losingTeamName} with ${losingSurvivors} remaining`);
 }
 
 
@@ -204,12 +247,12 @@ function battle(bots) {
     } else if (isBotSuperBot(deceptaconFighter)) {
       deceptaconScore += 1;
       autobots.shift();
-    } else if (shouldBotRun(autobotFighter, deceptaconFighter)) {
-      autobotScore += 1;
-      deceptacons.shift();
-    } else if (shouldBotRun(deceptaconFighter, autobotFighter)) {
+    } else if (shouldFirstBotRun(autobotFighter, deceptaconFighter)) {
       deceptaconScore += 1;
       autobots.shift();
+    } else if (shouldSecondBotRun(autobotFighter, deceptaconFighter)) {
+      autobotScore += 1;
+      deceptacons.shift();
     } else if (checkLoser(autobotFighter, deceptaconFighter)) {
       autobotScore += 1;
       deceptacons.shift();
@@ -222,29 +265,10 @@ function battle(bots) {
     }
   }
 
+
   // Generate the output text
 
-  let winningBots;
-  let winningTeamName;
-  let winningTeamSurvivorNames;
-  let losingBots;
-  let losingBotsTeamName;
-  let losingBotsSurvivors;
-  const remainingSurvivors = determineSurvivors(autobots.concat(deceptacons));
-
-  if (autobotScore !== deceptaconScore) {
-    winningBots = determineWinners(autobotScore, deceptaconScore, autobots, deceptacons);
-    winningTeamName = winningBots[0].team;
-    winningTeamSurvivorNames = determineSurvivors(winningBots);
-    losingBots = winningBots === autobots ? deceptacons : autobots;
-    losingBotsTeamName = winningTeamName === 'Autobot' ? 'Deceptacons' : 'Autobots';
-    losingBotsSurvivors = losingBots.length ? `with survivor(s): ${determineSurvivors(losingBots)}` : 'but there are no survivors';
-  }
-
-  const battleOutcome = winningBots ? `The winning team are the ${winningTeamName} with survivor(s): ${winningTeamSurvivorNames}` : 'It was a tie!';
-  const losingteamOutput = losingBots ? `The losing team are the ${losingBotsTeamName} ${losingBotsSurvivors}` : `Survivors are ${remainingSurvivors}`;
-
-  return `Battles: ${battleNumber}\n${battleOutcome}\n${losingteamOutput}`;
+  return generateReportFromBattle(autobotScore, deceptaconScore, autobots, deceptacons, battleNumber);
 }
 
 // Exports for tests
@@ -254,7 +278,8 @@ module.exports = {
   sortTeam,
   battle,
   checkBothTeamsExist,
-  shouldBotRun,
+  shouldFirstBotRun,
+  shouldSecondBotRun,
   checkLoser,
   checkBotsForErrors,
   isBotSuperBot,
